@@ -1,0 +1,60 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Main {
+
+	public static void main(String[] args) {		
+
+		Scanner scan = new Scanner(System.in);
+
+		System.out.println("Enter your row and column size: ");
+		int rowNcolumn = scan.nextInt();
+
+		long startTime = System.nanoTime();
+
+		RandomMatrix random = new RandomMatrix();
+
+		int[][] matrix1 = random.genNewMatrix(rowNcolumn);
+		int[][] matrix2 = random.genNewMatrix(rowNcolumn);
+
+		printMatrixes(matrix1);
+		printMatrixes(matrix2);
+
+		int[][] result = new int[rowNcolumn][rowNcolumn];
+
+		int numThreads = Runtime.getRuntime().availableProcessors(); // Number of available processors
+
+		Thread[][] threads = new Thread[rowNcolumn][rowNcolumn];
+
+		for (int i = 0; i < rowNcolumn; i++) {
+			for (int j = 0; j < rowNcolumn; j++) {
+				threads[i][j] = new Thread(new MatrixMultiplier(matrix1, matrix2, result, i, j));
+				threads[i][j].start();
+			}
+		}
+
+
+		try {
+			for (int i = 0; i < rowNcolumn; i++) {
+				for (int j = 0; j < rowNcolumn; j++) {
+					threads[i][j].join();
+				}
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		long endTime = System.nanoTime();
+		long durationTime = endTime - startTime;
+		printMatrixes(result);
+
+		System.out.println("Duration time with threads: " + durationTime);
+	}
+
+	public static void printMatrixes(int mat[][]) {
+		for (int[] row : mat) {
+			System.out.println(Arrays.toString(row));
+		}
+		System.out.println("--------------------------------");
+	}
+}

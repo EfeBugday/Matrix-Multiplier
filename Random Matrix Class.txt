@@ -1,0 +1,23 @@
+import java.util.Random;
+
+class RandomMatrix {
+    public static int[][] genNewMatrix(int n) {
+        int[][] A = new int[n][n];
+        Random R = new Random();
+
+
+        int i, j;
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                A[i][j] = R.nextInt(10);
+            }
+        }
+        return A;
+    }
+
+    public static int [][] genEmptyMatrix(int n){
+        int [][] A = new int [n][n];
+
+        return A;
+    }
+}

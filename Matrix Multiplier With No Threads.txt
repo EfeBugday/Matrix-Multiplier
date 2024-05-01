@@ -1,0 +1,51 @@
+import java.util.*;
+
+
+public class Main {
+
+        public static void main(String args[]) {
+
+            Scanner scan = new Scanner(System.in);
+
+            System.out.println("Enter your row and column size: ");
+            int rowNcolumn = scan.nextInt();
+
+            long startTime=System.nanoTime();
+
+            RandomMatrix random =new RandomMatrix();
+
+            int[][] matrix1= random.genNewMatrix(rowNcolumn);
+            int[][] matrix2= random.genNewMatrix(rowNcolumn);
+
+            printMatrixes(matrix1);
+            printMatrixes(matrix2);
+
+            int[][] result= new int[rowNcolumn][rowNcolumn];
+            for(int i=0;i<matrix1.length;i++){
+                for(int j=0;j<matrix2.length;j++){
+                    result[i][j]=0;
+                    for(int k=0;k< result.length;k++)
+                    {
+                        result[i][j]+=matrix1[i][k]*matrix2[k][j];
+                    }//end of k loop
+
+                }//end of j loop
+
+            }
+            long endTime=System.nanoTime();
+            long durationTime=endTime-startTime;
+            printMatrixes(result);
+            
+            System.out.println("Duration time without threads:"+durationTime);
+        }
+        public static void printMatrixes(int mat[][]) {
+            // Loop through all rows
+            for (int[] row : mat){
+
+                // converting each row as string
+                // and then printing in a separate line
+                System.out.println(Arrays.toString(row));
+            }
+            System.out.println("--------------------------------");
+        }
+    }
